@@ -2,3 +2,4 @@ flask
 flask-api
 psycopg2
 flask_cors
+flask_restful

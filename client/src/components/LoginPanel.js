@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react'
 
-const LoginPanel = () => {
+const LoginPanel = ({setPassword, setUsername}) => {
 
   let username = useRef()
   let password = useRef()
@@ -14,6 +14,10 @@ const LoginPanel = () => {
     let result = passwordCheck(username.current.value, password.current.value)
     setSession(result)
     console.log(['default','login','failed'][result+1])
+    if(result === 1){
+      setUsername(username.current.value)
+      setPassword(password.current.value)
+    }
 
   }
 
