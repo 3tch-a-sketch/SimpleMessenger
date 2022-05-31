@@ -1,6 +1,8 @@
 import React, {useRef, useState} from 'react'
+import axios from 'axios'
+import {sha512} from 'crypto-hash'
 
-const LoginPanel = ({setPassword, setUsername}) => {
+const LoginPanel = ({setPasswordHash, setUsername}) => {
 
   let username = useRef()
   let password = useRef()
@@ -8,23 +10,30 @@ const LoginPanel = ({setPassword, setUsername}) => {
   let [session, setSession] = useState(0)
 
   function login(){
-    // console.log(username.current.value, password.current.value)
-    // console.log("submit", submit)
-
-    let result = passwordCheck(username.current.value, password.current.value)
-    setSession(result)
-    console.log(['default','login','failed'][result+1])
-    if(result === 1){
-      setUsername(username.current.value)
-      setPassword(password.current.value)
-    }
+    passwordCheck(username.current.value, password.current.value)
 
   }
 
   function passwordCheck(username, password){
+    // username should be made lowercase before doing any comparison in the database
 
-    return Math.floor(Math.random() * 3) - 1
+    sha512(password).then( hash => {
+      // console.log({password_hash: hash, username: username.toLowerCase()})
+      axios.post('http://'+window.location.hostname+':8000/user', {password_hash: hash, username: username.toLowerCase()}).then(res => {
+        console.log(res.data['login'])
+        if(res.data['login'] === true){
+          console.log("login success")
+          setSession(1)
+          setUsername(username.toLowerCase())
+          console.log(username.toLowerCase())
+          setPasswordHash(hash)
+          console.log(hash)
+        }else if(res.data['login'] === false){
+          setSession(-1)
+        }
+      })
 
+    })
   }
 
   function getSessionStyle(){

@@ -29,9 +29,9 @@ services:
     environment:
       POSTGRES_USER: docker
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: data
     volumes:
       - db-messages:/db
+      - ./db/setup.sql:/docker-entrypoint-initdb.d/setup.sql
     networks:
       messenger_net:
         ipv4_address: 172.16.239.16
