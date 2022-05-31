@@ -11,7 +11,7 @@ function App() {
   let [username, setUsername] = useState('');
   let [passwordHash, setPasswordHash] = useState('');
 
-  useInterval(updateMessages, 100)
+  useInterval(updateMessages, 500)
 
   function updateMessages(){
     axios.get('http://'+window.location.hostname+':8000/message').then(res => {

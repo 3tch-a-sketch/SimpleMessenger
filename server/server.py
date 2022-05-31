@@ -9,7 +9,7 @@ import sys
 import datetime
 
 minConnections = 1
-maxConnections = 20
+maxConnections = 1000
 
 app = Flask(__name__)
 # CORS(app, support_credentials=True)
@@ -83,7 +83,7 @@ class Message(Resource):
 
         rows = cur.fetchall()
         json = {}
-        app.logger.info(rows[0][2])
+        # app.logger.info(rows[0][2])
         for r in range(len(rows)):
             json[r] = {
                 "post_id": rows[r][0],
